@@ -1,31 +1,43 @@
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBagIcon } from '@heroicons/react/24/outline'
-import { useRecoilValue } from 'recoil';
+import { ShoppingBagIcon } from '@heroicons/react/24/outline';
+import { useRecoilValueLoadable } from 'recoil';
 import { cartState } from '../../store/cart';
 import Search from '../common/Search';
+import ProductsLoad from '../products/ProductsLoad'; // 로딩 컴포넌트
 
 const navigation = [
-  { name: '패션', to : '/fashion', current: false },
-  { name: '액세서리', to : '/accessory', current: false },
-  { name: '디지털', to : '/digital', current: false },
-]
+  { name: '패션', to: '/fashion', current: false },
+  { name: '액세서리', to: '/accessory', current: false },
+  { name: '디지털', to: '/digital', current: false },
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
-const Nav = ({ toggleTheme }):JSX.Element=>{
+const Nav = ({ toggleTheme }): JSX.Element => {
+  const [searchVisible, setSearchVisible] = useState(false);
+  const cartLoadable = useRecoilValueLoadable(cartState);
 
-  const cart = useRecoilValue(cartState);
+  // 로딩 상태 처리
+  if (cartLoadable.state === 'loading') {
+    return <ProductsLoad limit={10} />; // 로딩 상태일 때 보여줄 컴포넌트
+  }
 
+  // 에러 상태 처리
+  if (cartLoadable.state === 'hasError') {
+    return <div>오류가 발생했습니다.</div>;
+  }
+
+  // 데이터가 성공적으로 로드된 경우
+  const cart = cartLoadable.contents;
   const totalItems = Object.values(cart).reduce((sum, item) => sum + (item.count || 0), 0);
 
-  
   return (
     <div className="fixed z-10 w-full bg-gray-800 shadow">
       <div className="mx-auto max-w-7xl px-2 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
-
           <div className="flex-none lg:hidden">
             <label htmlFor="side-menu" aria-label="open sidebar" className="btn btn-square btn-ghost w-auto transition-none">
               <svg
@@ -34,7 +46,7 @@ const Nav = ({ toggleTheme }):JSX.Element=>{
                 viewBox="0 0 24 24"
                 className="inline-block h-6 w-6">
                 <path
-                stroke='currentColor'
+                  stroke='currentColor'
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
@@ -44,27 +56,32 @@ const Nav = ({ toggleTheme }):JSX.Element=>{
           </div>
 
           <div className="flex flex-shrink-0 items-center ml-2">
-            <h1><Link to="/" className="flex items-center h-8 w-auto currentColor text-lg font-bold">React Shop</Link></h1>
+            <h1>
+              <Link to="/" className="flex items-center h-8 w-auto currentColor text-lg font-bold">
+                React Shop
+              </Link>
+            </h1>
           </div>
 
           <div className="flex flex-1 items-center sm:items-stretch sm:justify-start">
             <div className="hidden md:ml-6 md:flex md:space-x-4">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.to}
-                    aria-current={item.current ? 'page' : undefined}
-                    className={classNames('currentColor hover:bg-gray-700 hover:text-white',
-                      'rounded-md px-3 py-2 text-sm font-bold',
-                    )}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.to}
+                  aria-current={item.current ? 'page' : undefined}
+                  className={classNames('currentColor hover:bg-gray-700 hover:text-white',
+                    'rounded-md px-3 py-2 text-sm font-bold',
+                  )}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
           </div>
 
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:pr-0">
+            {/* theme toggle */}
             <label className="swap swap-rotate">
               <input type="checkbox" className="theme-controller" value="synthwave" onChange={toggleTheme} />
 
@@ -87,16 +104,43 @@ const Nav = ({ toggleTheme }):JSX.Element=>{
               </svg>
             </label>
 
-            {/* search */}
-                <Search />
-                
-            {/*  cart */}
+            {/* search input (hidden on sm) */}
+            <div className="hidden sm:block">
+              <Search />
+            </div>
+
+            {/* search icon (visible on sm) */}
+            <div className="block sm:hidden relative">
+              <button 
+                onClick={() => setSearchVisible(!searchVisible)}
+                className="btn btn-ghost p-3 hover:p-3 transition-none"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 stroke-gray-700 dark:stroke-white"
+                  fill="none"
+                  viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </button>
+              {searchVisible && (
+  <div className="fixed top-16 left-0 w-full shadow-lg z-50">
+                  <Search />
+                </div>
+              )}
+            </div>
+
+            {/* cart */}
             <Link to="/cart" tabIndex={0} className="btn btn-ghost btn-quadrangle ml-1 action:scale-90 p-3 hover:p-3 transition-none">
               <div className="indicator">
-              <ShoppingBagIcon
-                      aria-hidden="true"
-                      className="h-6 w-6 flex-shrink-0 currentColor"
-                    />
+                <ShoppingBagIcon
+                  aria-hidden="true"
+                  className="h-6 w-6 flex-shrink-0 currentColor"
+                />
                 <span className="indicator-item bg-red-500 w-5 h-5 flex items-center justify-center rounded-full text-white text-xs font-normal">{totalItems}</span>
               </div>
             </Link>
@@ -104,7 +148,7 @@ const Nav = ({ toggleTheme }):JSX.Element=>{
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Nav
+export default Nav;

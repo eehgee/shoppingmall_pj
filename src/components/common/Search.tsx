@@ -71,13 +71,18 @@ const Search = (): JSX.Element => {
 
   return (
     <div
-      className="dropdown relative"
+      className="dropdown relative w-full"
       ref={dropdownRef}
     >
       <input
         type="text"
         placeholder="검색"
         className="input input-bordered rounded currentColor w-full text-currentColor"
+
+        // input input-bordered rounded currentColor w-full text-currentColor
+        // className="fixed left-0 top-4 sm:static w-full input focus:outline-0 rounded-none sm:rounded bg-gray-500 sm:transform-none transition-all translate-y-full"
+        // className="input rounded-none fixed top-4 left-0 sm:static w-full sm:rounded bg-gray-700 sm:transform-none translate-y-full"
+
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         onKeyDown={handleKeyDown}

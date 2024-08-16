@@ -1,18 +1,30 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilValueLoadable } from "recoil";
 import { Link } from "react-router-dom";
 import { cartState } from "../../store/cart";
-import BreadCrumb from "../common/Breadcrumb";
 import CartList from "./CartList";
 import Confirm from "../common/Confirm";
+import ProductsLoad from "../products/ProductsLoad"; // 로딩 컴포넌트
 
 const CartView = (): JSX.Element => {
-  const cart = useRecoilValue(cartState);
+  const cartLoadable = useRecoilValueLoadable(cartState);
+  
+  // 로딩 상태 처리
+  if (cartLoadable.state === 'loading') {
+    return <ProductsLoad limit={10} />; // 로딩 상태일 때 보여줄 컴포넌트
+  }
+
+  // 에러 상태 처리
+  if (cartLoadable.state === 'hasError') {
+    return <div>오류가 발생했습니다.</div>;
+  }
+
+  // 데이터가 성공적으로 로드된 경우
+  const cart = cartLoadable.contents;
   const hasItems = Object.keys(cart).length > 0;
 
   return (
     <>
       <div className="mt-6 md:mt-14 px-2 lg:px-0">
-        
         {/* 물품이 없다면? */}
         {!hasItems ? (
           <>
@@ -30,9 +42,7 @@ const CartView = (): JSX.Element => {
             </div>
           </>
         ) : (
-            <>
-              <CartList items={cart} />
-            </>
+          <CartList items={cart} />
         )}
       </div>
       <Confirm />

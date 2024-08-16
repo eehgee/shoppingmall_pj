@@ -23,8 +23,13 @@ body {
   background-color: #000;
 }
 
+
 [data-theme="light"] .bg-gray-800 {
   background-color: #fff;
+}
+
+[data-theme="light"] .bg-gray-700 {
+  background-color: #f4f4f4;
 }
 
 [data-theme="light"] .bg-white-300 {
