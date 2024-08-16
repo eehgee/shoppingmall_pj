@@ -4,7 +4,7 @@ import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { useRecoilValueLoadable } from 'recoil';
 import { cartState } from '../../store/cart';
 import Search from '../common/Search';
-import ProductsLoad from '../products/ProductsLoad'; // 로딩 컴포넌트
+import ProductsLoad from '../products/ProductsLoad';
 
 const navigation = [
   { name: '패션', to: '/fashion', current: false },
@@ -22,7 +22,7 @@ const Nav = ({ toggleTheme }): JSX.Element => {
 
   // 로딩 상태 처리
   if (cartLoadable.state === 'loading') {
-    return <ProductsLoad limit={10} />; // 로딩 상태일 때 보여줄 컴포넌트
+    return <ProductsLoad limit={10} />;
   }
 
   // 에러 상태 처리
@@ -30,7 +30,7 @@ const Nav = ({ toggleTheme }): JSX.Element => {
     return <div>오류가 발생했습니다.</div>;
   }
 
-  // 데이터가 성공적으로 로드된 경우
+  // 데이터가 성공적으로 로드
   const cart = cartLoadable.contents;
   const totalItems = Object.values(cart).reduce((sum, item) => sum + (item.count || 0), 0);
 
@@ -104,12 +104,11 @@ const Nav = ({ toggleTheme }): JSX.Element => {
               </svg>
             </label>
 
-            {/* search input (hidden on sm) */}
+              {/* search */}
             <div className="hidden sm:block">
               <Search />
             </div>
 
-            {/* search icon (visible on sm) */}
             <div className="block sm:hidden relative">
               <button 
                 onClick={() => setSearchVisible(!searchVisible)}
@@ -128,7 +127,7 @@ const Nav = ({ toggleTheme }): JSX.Element => {
                 </svg>
               </button>
               {searchVisible && (
-  <div className="fixed top-16 left-0 w-full shadow-lg z-50">
+                <div className="fixed top-16 left-0 w-full shadow-lg z-50">
                   <Search />
                 </div>
               )}

@@ -3,22 +3,21 @@ import { Link } from "react-router-dom";
 import { cartState } from "../../store/cart";
 import CartList from "./CartList";
 import Confirm from "../common/Confirm";
-import ProductsLoad from "../products/ProductsLoad"; // 로딩 컴포넌트
+import ProductsLoad from "../products/ProductsLoad";
 
 const CartView = (): JSX.Element => {
   const cartLoadable = useRecoilValueLoadable(cartState);
   
-  // 로딩 상태 처리
+  // 로딩 상태
   if (cartLoadable.state === 'loading') {
-    return <ProductsLoad limit={10} />; // 로딩 상태일 때 보여줄 컴포넌트
+    return <ProductsLoad limit={10} />; 
   }
 
-  // 에러 상태 처리
+  // 에러 상태
   if (cartLoadable.state === 'hasError') {
     return <div>오류가 발생했습니다.</div>;
   }
 
-  // 데이터가 성공적으로 로드된 경우
   const cart = cartLoadable.contents;
   const hasItems = Object.keys(cart).length > 0;
 

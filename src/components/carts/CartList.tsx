@@ -38,9 +38,10 @@ const CartList = ({ items }: CartListProps): JSX.Element => {
               {/* 상세정보 */}
               <div className="w-full lg:w-1/2 lg:pl-10 mb-8">
                 <Link to={`/products/${item.id}`}><h1 className="text-xl font-bold mb-4 hover:underline">{item.title}</h1></Link>
-                <p className="text-3xl mb-4">  {toCurrencyFormat(item.price * item.count)} <span className="text-2xl">({toCurrencyFormat(rounding)})</span>
+                <p className="text-3xl mb-4">{toCurrencyFormat(item.price * item.count)} 
+                  <span className="text-2xl">({toCurrencyFormat(rounding)})</span>
                 </p>
-                  <div className="flex">
+                <div className="flex">
                   <button className="btn btn-primary rounded-tr-none rounded-br-none" onClick={() => removeFromCartHandler(item.id)}>-</button>
                   <button className="join-item flex justify-center items-center w-12 hover:bg-gray-500 opacity-50">{`${item.count}`}</button>
                   <button className="btn btn-primary rounded-tl-none rounded-bl-none" onClick={() => addToCartHandler(item)}>+</button>
@@ -51,7 +52,7 @@ const CartList = ({ items }: CartListProps): JSX.Element => {
         })}
 
         <div className="flex shrink-0 justify-start items-center lg:justify-end">
-          {/* tatal */}
+          {/* total */}
           <p className="text-2xl mr-6">
             총 : {toCurrencyFormat(itemsArray.reduce((total, item) => total + Math.round(item.price * item.count), 0))}
           </p>

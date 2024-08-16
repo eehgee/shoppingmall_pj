@@ -3,8 +3,8 @@ import { IProduct } from "../../store/products"
 
 
 interface ItemProps{
-    items: IProduct[]
-    isScroll?: boolean;
+  items: IProduct[]
+  isScroll?: boolean;
 }
 
 const ItemList = ({items, isScroll = false}:ItemProps): JSX.Element => {

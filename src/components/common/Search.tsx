@@ -6,10 +6,11 @@ import CONSTANTS from "../../constants/constants";
 import "../../assets/css/tailwind.css"
 
 const Search = (): JSX.Element => {
+  const productsLoadable = useRecoilValueLoadable(productsList);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const productsLoadable = useRecoilValueLoadable(productsList);
   const navigate = useNavigate();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
@@ -78,11 +79,6 @@ const Search = (): JSX.Element => {
         type="text"
         placeholder="검색"
         className="input input-bordered rounded currentColor w-full text-currentColor"
-
-        // input input-bordered rounded currentColor w-full text-currentColor
-        // className="fixed left-0 top-4 sm:static w-full input focus:outline-0 rounded-none sm:rounded bg-gray-500 sm:transform-none transition-all translate-y-full"
-        // className="input rounded-none fixed top-4 left-0 sm:static w-full sm:rounded bg-gray-700 sm:transform-none translate-y-full"
-
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         onKeyDown={handleKeyDown}

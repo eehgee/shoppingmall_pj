@@ -35,7 +35,7 @@ body {
 [data-theme="light"] .bg-white-300 {
   background-color: #f7f7f7;
 }
-/* #a6adbb */
+
 .menu {
   top: 112px;
 }
@@ -52,10 +52,6 @@ body {
 .js-searchedItem:active span {
   color: white !important;
 }
-
-/* .input:focus {
-  caret-color: white;
-} */
 
 .searchTextHidden{
   display: -webkit-box;
