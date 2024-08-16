@@ -1,0 +1,61 @@
+@charset "utf-8";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.dark {
+  background-color: #141414;
+  color: #fff;
+}
+
+[data-theme="light"] {
+  background-color: #fff;
+  color: #1a1a1a;
+}
+
+.dark .bg-gray-800 {
+  background-color: #000;
+}
+
+[data-theme="light"] .bg-gray-800 {
+  background-color: #fff;
+}
+
+[data-theme="light"] .bg-white-300 {
+  background-color: #f7f7f7;
+}
+/* #a6adbb */
+.menu {
+  top: 112px;
+}
+
+.drawer-content {
+  max-height: initial !important;
+  min-height: -webkit-fill-available;
+}
+
+.drawer-toggle:checked + .drawer-content {
+  max-height: 100vh !important;
+}
+
+.js-searchedItem:active span {
+  color: white !important;
+}
+
+/* .input:focus {
+  caret-color: white;
+} */
+
+.searchTextHidden{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;  
+  -webkit-line-clamp: 2;  
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
