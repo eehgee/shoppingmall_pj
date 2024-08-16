@@ -35,6 +35,7 @@ const Search = (): JSX.Element => {
       setSelectedIndex((prevIndex) => Math.max(prevIndex - 1, 0));
     } else if (e.key === CONSTANTS.KEY.ENTER && selectedIndex >= 0) {
       navigate(`/products/${filteredProducts[selectedIndex].id}`);
+      setSearchQuery(""); 
     }
   };
 
@@ -70,6 +71,11 @@ const Search = (): JSX.Element => {
     }
   };
 
+  const handleProductClick = (id: number) => {
+    setSearchQuery(""); 
+    navigate(`/products/${id}`);
+  };
+
   return (
     <div
       className="dropdown relative w-full"
@@ -96,6 +102,7 @@ const Search = (): JSX.Element => {
                 className={`p-2 cursor-pointer hover:bg-gray-500 ${
                   index === selectedIndex ? "bg-gray-500" : ""
                 }`}
+                onClick={() => handleProductClick(product.id)}
               >
                 <Link to={`/products/${product.id}`} className="block searchTextHidden">
                   {product.title}
