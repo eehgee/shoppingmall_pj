@@ -61,9 +61,9 @@ const ItemDetail = ({ item }: { item: IProduct }) => {
             <Rating rate={item.rating?.rate} count={item.rating?.count} />
           </div>
           <p className="text-3xl mb-4">${rounding}</p>
-          <div>
+          <div className="flex">
             <button className="btn btn-accent" onClick={handleAddToCart}>장바구니에 담기</button>
-            <Link to="/cart" className="btn btn-active btn-ghost ml-3">장바구니로 이동</Link>
+            <Link to="/cart" className="btn btn-active btn-ghost ml-2">장바구니로 이동</Link>
           </div>
         </div>
       </div>
